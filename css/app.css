@@ -1,0 +1,82 @@
+* {
+	outline: none;
+}
+
+/*!!!!!!!!!! NAVBAR !!!!!!!!!!!!*/
+.site-logo {
+	width:175px;
+	height:50px;
+	margin-top: -2px;
+}
+
+#content {
+	z-index: 1;
+	position: absolute;
+	/*height: 100%;*/
+	height: 65px;
+	width:100%;
+}
+
+div#offCanvasLeft.off-canvas.position-left.is-open {
+/*	z-index: 1;
+	height: 100%;*/
+	position: relative;
+}
+
+
+
+/*
+div#offCanvasRight {
+	position: relative;
+}*/
+
+.nav-desktop {
+	background-color: rgba(0,0,0,.7);
+	position: absolute;
+	width:100%;
+	height: 65px;
+}
+
+div#offCanvasRight.off-canvas.position-right {
+	margin-top:50px;
+}
+
+
+#entire {
+	height: 100%;
+	width: 100%;
+}
+
+ul.menu {
+	background-color: transparent;
+}
+
+button.menu-icon {
+	/*margin-top: -6px;*/
+	margin-right: 15px;
+	margin-left: 10px;
+}
+
+button.button {
+	height: 65px;
+	margin-top: -8px;
+	background-color: transparent;
+	padding-top: 10;
+}
+
+button.button:hover{
+	background-color: rgba(255,255,255, 0.2);
+}
+.button:focus {
+	background-color: transparent;
+}
+
+
+
+/*!!!!!!! MAP DIV !!!!!!!!*/
+#map {
+	position: absolute;
+	/*margin-top: -72px;*/
+	height: 100%;
+	width:100%;
+}

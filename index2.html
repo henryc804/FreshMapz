@@ -1,0 +1,166 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freshmapz | find fresh food</title>
+    <link rel="stylesheet" href="css/foundation.css">
+    <link rel="stylesheet" href="css/app2.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuPGZAOsGJxejwmL1vsUl0sYtnbAVwyKk&libraries=geometry" type="text/javascript"></script>
+    <script src="js/data.json"></script>
+    <script src="js/dataFunctions.js"></script>
+    <script src="js/mapFunctions.js"></script>
+    <script src="js/mainFunctions.js"></script>
+</head>
+
+<body>
+
+
+
+<div class="off-canvas-wrapper" id="content">
+    <div class="off-canvas-wrapper-inner" data-off-canvas-wrapper>
+
+
+        <div class="off-canvas position-left" id="offCanvasLeft" data-off-canvas>
+            <!-- Close button -->
+            <button class="close-button" aria-label="Close menu" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <!-- Menu -->
+            <ul class="vertical menu">
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+        <div class="off-canvas position-right" id="offCanvasRight" data-off-canvas data-position="right">
+            <!-- Close button -->
+            <button class="close-button" id="rightCloseButton" aria-label="Close menu" type="button" data-close>
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <!-- Menu -->
+            <ul class="vertical menu">
+            
+                <legend>Check these out</legend>
+
+                <input type="checkbox" id='Organic_Check'>
+                <label for="organic">Organic</label>
+                
+                <input type="checkbox" id='Bakedgoods_Check'>
+                <label for="bakedgoods">Baked goods</label>
+
+                <input type="checkbox" id='Cheese_Check'>
+                <label for="cheese">Cheese</label>
+                <input type="checkbox" id='Crafts_Check'>
+                <label for="crafts">Crafts</label>
+                <input type="checkbox" id='Flowers_Check'>
+                <label for="flowers">Flowers</label>
+                <input type="checkbox" id='Eggs_Check'>
+                <label for="eggs">Eggs</label>
+                <input type="checkbox" id='Seafood_Check'>
+                <label for="seafood">Seafood</label>
+                <input type="checkbox" id='Herbs_Check'>
+                <label for="herbs">Herbs</label>
+                <input type="checkbox" id='Vegetables_Check'>
+                <label for="vegetables">Vegetables</label>
+                <input type="checkbox" id='Honey_Check'>
+                <label for="Honey">honey</label>
+                <input type="checkbox" id='Jams_Check'>
+                <label for="jams">Jams</label>
+                <input type="checkbox" id='Maple_Check'>
+                <label for="maple">Maple</label>
+                <input type="checkbox" id='Meat_Check'>
+                <label for="meat">Meat</label>
+                <input type="checkbox" id='Nursery_Check'>
+                <label for="nursery">Nursery</label>
+                <input type="checkbox" id='Nuts_Check'>
+                <label for="nuts">Nuts</label>
+
+                <input type="checkbox" id='Plants_Check'>
+                <label for="plants">Plants</label>
+                <input type="checkbox" id='Poultry_Check'>
+                <label for="poultry">Poultry</label>
+                <input type="checkbox" id='Prepared_Check'>
+                <label for="prepared">Prepared</label>
+                <input type="checkbox" id='Soap_Check'>
+                <label for="soup">Soup</label>
+                <input type="checkbox" id='Trees_Check'>
+                <label for="trees">Trees</label>
+                <input type="checkbox" id='Wine_Check'>
+                <label for="wine">Wine</label>
+                <input type="checkbox" id='Coffee_Check'>
+                <label for="coffee">Coffee</label>
+                <input type="checkbox" id='Beans_Check'>
+                <label for="beans">Beans</label>
+                <input type="checkbox" id='Fruits_Check'>
+                <label for="fruits">Fruits</label>
+                <input type="checkbox" id='Grains_Check'>
+                <label for="grains">Grains</label>
+                <input type="checkbox" id='Juices_Check'>
+                <label for="juices">Juices</label>
+                <input type="checkbox" id='Mushrooms_Check'>
+                <label for="mushrooms">Mushrooms</label>
+                <input type="checkbox" id='PetFood_Check'>
+                <label for="petfood">Pet Food</label>
+                <input type="checkbox" id='Tofu_Check'>
+                <label for="tofu">Tofu</label>
+                <input type="checkbox" id='WildHarvested_Check'>
+                <label for="wildharvested">Wild Harvested</label>
+
+
+
+
+
+
+
+
+
+
+                <!-- <li><a href="#">Options</a></li> -->
+            </ul>
+        </div>
+
+
+
+        <div class="off-canvas-content" data-off-canvas-content>
+            <!-- Page content -->
+            <!-- DESKTOP NAVIGATION -->
+            <div class="top-bar nav-desktop">
+                <div class="top-bar-left">
+                    <ul class="menu">
+                        <li><button type="button" class="menu-icon" data-toggle="offCanvasLeft"></button></li>
+                        <li><img class="site-logo" src="images/logo2.png" alt="Freshmapz"></li>
+                        <!-- Made with <a href="http://logomakr.com" title="Logo Maker">Logo Maker</a> -->
+                    </ul>
+                </div>
+                <div class="top-bar-right">
+                    <button type="button" class="button" data-toggle="offCanvasRight">Options</button>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="map"></div>
+
+
+        <!-- for the off-canvas wrappers -->
+    </div>
+</div>
+
+
+    <!-- <div id="map"></div> -->
+<!-- </div> -->
+
+
+
+
+    <script src="js/vendor/jquery.js"></script>
+    <script src="js/vendor/what-input.js"></script>
+    <script src="js/vendor/foundation.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+
+
+</html>

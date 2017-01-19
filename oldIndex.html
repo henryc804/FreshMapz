@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+
+<script src="https://code.jquery.com/jquery-2.2.3.min.js"   integrity="sha256-a23g1Nt4dtEYOj7bR+vTu7+T8VP13humZFBJNIYoEJo="   crossorigin="anonymous"></script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBuPGZAOsGJxejwmL1vsUl0sYtnbAVwyKk&libraries=geometry" type="text/javascript"></script>
+<!--<script async defer src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCc6RUvXN7WiswEPHYL5rXVFtMPd4U52nw"></script>//-->
+
+<script src="Export.json"></script>
+<script src="dataFunctions.js"></script>
+
+<link rel="stylesheet" type="text/css" href="style.css">
+
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+<!-- Latest compiled and minified CSS -->
+<!-- <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/css/jasny-bootstrap.min.css"> -->
+
+<!-- Latest compiled and minified JavaScript -->
+<!-- <script src="//cdnjs.cloudflare.com/ajax/libs/jasny-bootstrap/3.1.3/js/jasny-bootstrap.min.js"></script> -->
+
+<script src='app.js'></script>
+
+<script type='Final_Style.html'></script>
+
+<script>
+
+
+
+//	first step i need to do is make the data easily stratified on
+//	ssooooo, checkboxes....i need to make a dropdown menu or checkboxes that will tell me if they are selected,
+//	then i need to make something that allows me to find each one
+//	i need to make the data be stratified by looping through everything...
+
+
+
+
+var map;
+
+var days = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+for(var x = 0; x < data.length; x++){
+	for(var y = 0; y < days.length; y++){
+		data[x][days[y]] = "N";
+		var string = String(data[x]["Season1Time"]);
+		if(string.indexOf(days[y]) > -1){
+			data[x][days[y]] = "Y";
+		}
+	}
+}
+
+
+var checkList = [];
+
+
+var locations = getLocations(checkList);
+var markersData = [], listOfMarkers = [];
+var names = getName(locations);
+var coords = getCoord(locations);
+var descrips = getInfo(locations);
+for(var x = 0; x < locations.length; x++){
+	markersData.push({"title": names[x], "lat": coords[x][0], "lng": coords[x][1], "description": descrips[x]});
+}
+
+function init() {
+    var options = {
+        zoom: 13,
+        center: new google.maps.LatLng(42.35, -71.083),
+        mapTypeId: google.maps.MapTypeId.STREET
+    };
+    map = new google.maps.Map(document.getElementById('map'), options);
+
+
+   // a new Info Window is created
+   infoWindow = new google.maps.InfoWindow();
+
+   // Event that closes the InfoWindow with a click on the map
+   google.maps.event.addListener(map, 'click', function() {
+      infoWindow.close();
+   });
+
+   // Finally displayMarkers() function is called to begin the markers creation
+   displayMarkers();
+
+
+}
+
+// This function will iterate over markersData array
+// creating markers with createMarker function
+function displayMarkers(){
+
+   // this variable sets the map bounds and zoom level according to markers position
+   var bounds = new google.maps.LatLngBounds();
+
+   // For loop that runs through the info on markersData making it possible to createMarker function to create the markers
+   for (var i = 0; i < markersData.length; i++){
+
+      var latlng = new google.maps.LatLng(markersData[i].lat, markersData[i].lng);
+      var name = markersData[i].title;
+      var description = markersData[i].description;
+      //var address1 = markersData[i].address1;
+      //var address2 = markersData[i].address2;
+      //var postalCode = markersData[i].postalCode;
+
+      createMarker(latlng, name, description);
+
+      // Marker’s Lat. and Lng. values are added to bounds variable
+      bounds.extend(latlng); 
+   }
+
+   // Finally the bounds variable is used to set the map bounds
+   // with API’s fitBounds() function
+   map.fitBounds(bounds);
+}
+
+// This function creates each marker and sets their Info Window content
+function createMarker(latlng, name, description){	//latlng, name, address1, address2, postalCode
+   var marker = new google.maps.Marker({
+      map: map,
+      position: latlng,
+      title: name
+   });
+
+   // This event expects a click on a marker
+   // When this event is fired the infowindow content is created
+   // and the infowindow is opened
+   google.maps.event.addListener(marker, 'click', function() {
+      
+      // Variable to define the HTML content to be inserted in the infowindow
+      var iwContent = '<div id="iw_container">' +
+      '<h5 class="heading">' + name + '</h5>' +
+      '<div class="iw_content">' + description;	// + '<br />' +
+      // address2 + '<br />' +
+      // postalCode + '</div></div>';
+      
+      // including content to the infowindow
+      infoWindow.setContent(iwContent);
+
+      // opening the infowindow in the current map and at the current marker location
+      infoWindow.open(map, marker);
+   });
+
+   listOfMarkers.push(marker);
+
+}
+
+//locate to run the find nearest x locations to you button//
+//
+//
+//
+	
+    function locate(numberMarkersInput) {
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+
+                    var pos = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent('Location found.');
+                    map.setCenter(pos);
+                    nearestMarkers(pos,numberMarkersInput);
+
+                },
+
+                function() {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+        }
+    }
+
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+            'Error: The Geolocation service failed.' :
+            'Error: Your browser doesn\'t support geolocation.');
+    }
+
+    function nearestMarkers(userLocation,numberMarkersInput) {
+
+        // find the previous indices of the closest markers after they've been sorted by distance
+        // create output array and push in the n relevant markers (n selected by user)
+        // pass this output array into updateShowNearestMarkers
+        // 
+
+        //DONT CALL CREATEMARKER
+        closestMarkerArray = [];
+        closestMarkerIndices = [];
+        nClosestMarkers = [];
+
+        for (var i = 0; i < markersData.length; i++) {
+            var markerLat = markersData[i].lat;
+            var markerLng = markersData[i].lng;
+            var markerCoords = new google.maps.LatLng(markerLat, markerLng);
+
+            //distance is a new attribute of markersData
+            markersData[i].distance = google.maps.geometry.spherical.computeDistanceBetween(userLocation, markerCoords);
+
+            //closestMarkerArray is an array of all of the markers
+            closestMarkerArray.push(markersData[i]);
+
+        }
+        closestMarkerArray.sort(function(a, b) {
+            return a.distance - b.distance;
+        });
+        //console.log(closestMarkerArray);
+
+        for (var j = 0; j < numberMarkersInput; j++) {
+            findIndexByKeyValue(markersData, "distance", closestMarkerArray[j].distance);
+            for (var k = 0; k < closestMarkerIndices.length; k++) {
+                nClosestMarkers.push(markersData[closestMarkerIndices[k]]);
+            }
+        }
+        //console.log(nClosestMarkers);
+        updateShowNearestMarkers(nClosestMarkers);
+        //displayClosestMarkers(numberMarkersInput);
+    }
+
+    function findIndexByKeyValue(arraytosearch, key, valuetosearch) {
+
+        for (var i = 0; i < arraytosearch.length; i++) {
+
+            if (arraytosearch[i][key] == valuetosearch) {
+                closestMarkerIndices.push(i);
+                //return i;
+            }
+        }
+        //return null;
+        return closestMarkerIndices;
+    }
+
+    function updateShowNearestMarkers(input){
+        // var locations = getBlahLocations(input);
+        removeBlahMarkers(input);
+        //removeMarkers(input);
+        //console.log(locations);
+    }
+
+
+
+google.maps.event.addDomListener(window, 'load', init);
+
+
+function removeBlahMarkers(locs){
+	//	sets markers visible and some to not visible
+	//	not really removing them
+	
+	var removeIndex = [];
+	var visibleIndex = [];
+
+
+	for(var x = 0; x < locs.length; x++){
+		index = markersData.indexOf(locs[x]);
+		visibleIndex.push(index);
+	}
+	
+	for(var y = 0; y < locations.length; y++){
+		if(markersData.indexOf(y) == -1){
+			removeIndex.push(y);
+		}
+	}
+
+
+	for(x = 0; x < removeIndex.length; x++){
+		listOfMarkers[removeIndex[x]].setMap(null);
+	}
+	for(x = 0; x < visibleIndex.length; x++){
+		listOfMarkers[visibleIndex[x]].setMap(map);
+	}
+}
+
+
+function removeMarkers(locs){
+	//	sets markers visible and some to not visible
+	//	not really removing them
+	
+	var removeIndex = [];
+	var visibleIndex = [];
+
+
+	for(var x = 0; x < locs.length; x++){
+		index = locations.indexOf(locs[x]);
+		visibleIndex.push(index);
+	}
+	
+	for(var y = 0; y < locations.length; y++){
+		if(visibleIndex.indexOf(y) == -1){
+			removeIndex.push(y);
+		}
+	}
+
+
+	for(x = 0; x < removeIndex.length; x++){
+		listOfMarkers[removeIndex[x]].setMap(null);
+	}
+	for(x = 0; x < visibleIndex.length; x++){
+		listOfMarkers[visibleIndex[x]].setMap(map);
+	}
+}
+
+function update(){
+	var locations = getLocations(checkList);
+	removeMarkers(locations);
+	//console.log(locations);
+}
+
+</script>
+
+<style type="text/css">
+   body { background: transparent; !important; } /* Adding !important forces the browser to overwrite the default style applied by Bootstrap */
+</style>
+
+<body>
+	<div class='container-fluid'>
+
+		<div class="row">
+	  		<div class="col-md-2">
+
+	  			<img src="logo.png" class="logo">
+
+	  			<div id='daysOfWeek daysOfWeekCheckbox'>
+
+	  			Days of week these markets are open:
+
+	  				<div class='checkbox row daysOfWeekCheckbox'>
+	  					<input type="checkbox" name='checkbox' id='Mon'>
+	  					Monday
+	  				</div>
+	  				<div class='checkbox row daysOfWeekCheckbox'>
+	  					<input type="checkbox" name="checkbox" id='Tue'>
+	  					Tuesday
+					</div>
+					<div class='checkbox row daysOfWeekCheckbox'>
+						<input type="checkbox" name="checkbox" id='Wed'>
+						Wednesday
+					</div>
+					<div class='checkbox row daysOfWeekCheckbox'>
+						<input type="checkbox" name="checkbox" id='Thu'>
+						Thursday
+					</div>
+					<div class='checkbox row daysOfWeekCheckbox'>
+						<input type="checkbox" name="checkbox" id='Fri'>
+						Friday
+					</div>
+					<div class='checkbox row daysOfWeekCheckbox'>
+						<input type="checkbox" name="checkbox" id='Sat'>
+						Saturday
+					</div>
+					<div class='checkbox row daysOfWeekCheckbox'>
+						<input type="checkbox" name="checkbox" id='Sun'>
+						Sunday
+					</div>
+					<!-- <div class='row seasonDatePosition'>
+						Season Date
+					</div> -->
+				</div>
+	  		</div>
+			<div class="col-md-8 mapPadding">
+				<div id="map"></div>
+			</div>
+			<div class="col-md-2">
+				<div class="row benefitsPadding">
+				  	<div class="input-group">
+				      <span class="input-group-btn">
+				        <button class="btn btn-default benefitsPadding" id='findButton' type="button">Find</button>
+				      </span>
+				      <input type="text" class="form-control benefitsPadding" id='findButtonInput' placeholder="# locations">
+				    </div><!-- /input-group -->
+				    Enter the number of Locations you want to find nearest to you.
+				</div><!-- /.row -->
+				</button>
+				<div class='row benefitsPadding'>
+					Benefits		
+				</div>
+				<div class='row benefitsPadding'>
+					<input type="checkbox" id="Credit_Check">
+					Credit
+				</div>
+				<div class='row benefitsPadding'>
+					<input type="checkbox" id="WIC_Check">
+					WIC
+				</div>
+				<div class='row benefitsPadding'>
+					<input type="checkbox" id="WIC_Cash_Check">
+					WIC Cash
+				</div>
+				<div class='row benefitsPadding'>
+					<input type="checkbox" id="SFMNP_Check">
+					SFMNP
+				</div>
+				<div class='row benefitsPadding'>
+					<input type="checkbox" id="SNAP_Check">
+					SNAP
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class='row foodType well'>
+				<input type="checkbox" id='Organic_Check'>
+				Organic
+				<input type="checkbox" id='Bakedgoods_Check'>
+				Bakedgoods
+				<input type="checkbox" id='Cheese_Check'>
+				Cheese
+				<input type="checkbox" id='Crafts_Check'>
+				Crafts
+				<input type="checkbox" id='Flowers_Check'>
+				Flowers
+				<input type="checkbox" id='Eggs_Check'>
+				Eggs
+				<input type="checkbox" id='Seafood_Check'>
+				Seafood
+				<input type="checkbox" id='Herbs_Check'>
+				Herbs
+				<input type="checkbox" id='Vegetables_Check'>
+				Vegetables
+				<input type="checkbox" id='Honey_Check'>
+				Honey
+				<input type="checkbox" id='Jams_Check'>
+				Jams
+				<input type="checkbox" id='Maple_Check'>
+				Maple
+				<input type="checkbox" id='Meat_Check'>
+				Meat
+				<input type="checkbox" id='Nursery_Check'>
+				Nursery
+				<input type="checkbox" id='Nuts_Check'>
+				Nuts
+			</div>
+		</div>	
+		<div class="row">
+			<div class='row foodType well'>
+				<input type="checkbox" id='Plants_Check'>
+				Plants
+				<input type="checkbox" id='Poultry_Check'>
+				Poultry
+				<input type="checkbox" id='Prepared_Check'>
+				Prepared
+				<input type="checkbox" id='Soap_Check'>
+				Soap
+				<input type="checkbox" id='Trees_Check'>
+				Trees
+				<input type="checkbox" id='Wine_Check'>
+				Wine
+				<input type="checkbox" id='Coffee_Check'>
+				Coffee
+				<input type="checkbox" id='Beans_Check'>
+				Beans
+				<input type="checkbox" id='Fruits_Check'>
+				Fruits
+				<input type="checkbox" id='Grains_Check'>
+				Grains
+				<input type="checkbox" id='Juices_Check'>
+				Juices
+				<input type="checkbox" id='Mushrooms_Check'>
+				Mushrooms
+				<input type="checkbox" id='PetFood_Check'>
+				PetFood
+				<input type="checkbox" id='Tofu_Check'>
+				Tofu
+				<input type="checkbox" id='WildHarvested_Check'>
+				WildHarvested
+			</div>
+
+		</div>
+
+	</div>
+</body>
+
+</html>

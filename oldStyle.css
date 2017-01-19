@@ -1,0 +1,54 @@
+html { 
+     background-image: url('background2.jpg');
+     background-repeat: repeat; 
+ }
+
+ .body {
+     background-color: transparent; 
+ }
+
+ .well {
+   background-color: rgba(245, 245, 245, 0.2);
+}
+
+/*.col3Padding{
+  padding:1000px;
+}*/
+
+#map{
+  
+  margin:auto;
+  width:600px;
+  height:500px;
+}
+
+.daysOfWeekCheckbox{
+  margin: auto;
+  padding-left:70px;
+  padding-top:15px;
+
+}
+
+.seasonDatePosition{
+  margin-top: 50px;
+  padding-left: 40px;
+}
+
+.benefitsPadding{
+  margin-top: 30px;
+}
+
+.mapPadding{
+  margin-top: 100px;
+  padding-left:1000px;
+}
+
+.logo{
+  width:250px;
+  height:250px;
+  /*margin-left: 10px;*/
+}
+
+.foodType{
+  margin-left:auto;
+}
